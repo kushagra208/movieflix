@@ -190,8 +190,8 @@ public class MovieService {
                             return Optional.ofNullable(m2.getYear()).orElse("")
                                     .compareTo(Optional.ofNullable(m1.getYear()).orElse(""));
                         case "rating":
-                            return Optional.ofNullable(m2.getRating()).orElse(0)
-                                    .compareTo(Optional.ofNullable(m1.getRating()).orElse(0));
+                            return Optional.ofNullable(m2.getRating()).orElse((double) 0)
+                                    .compareTo(Optional.ofNullable(m1.getRating()).orElse((double) 0));
                         default:
                             return 0; // unknown sort → no sorting
                     }
@@ -302,7 +302,7 @@ public class MovieService {
                     if ((m.getGenres() == null || m.getGenres().isEmpty()) && details.getGenre() != null) {
                         m.setGenres(Arrays.stream(details.getGenre().split(",")).map(String::trim).toList());
                     }
-                    if (m.getRating() == null && details.getImdbRating() != null) {
+                    if (m.getRating() == null && details.getImdbRating() != null && !details.getImdbRating().equalsIgnoreCase("N/A")) {
                         m.setRating(CommonUtil.parseRating(details.getImdbRating()));
                     }
                     m.setLastFetchedTimestamp(Instant.now().toEpochMilli());
